@@ -2,6 +2,7 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import ThemeToggle from "../components/ThemeToggle";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,26 +21,41 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+    <div className="auth-container">
+      <div className="auth-card">
+        <img
+          src="src/images/1.png" 
+          alt="Logo"
+          style={{ width: "150px", height: "150px", marginBottom: "10px" }}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      {err && <p style={{ color: "red" }}>{err}</p>}
+
+        <h2>Welcome Back</h2>
+        <p className="subtitle">Log in to continue your journey</p>
+
+        <form onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {err && <p className="error">{err}</p>}
+          <button type="submit">Login</button>
+        </form>
+
+        <p className="switch-auth">
+          Don’t have an account? <a href="/signup">Sign up</a>
+        </p>
+        <ThemeToggle />
+      </div>
     </div>
   );
 }
