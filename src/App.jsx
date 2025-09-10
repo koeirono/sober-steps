@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
@@ -16,6 +16,8 @@ function AppWrapper() {
     <>
       {!hideNavbar && <Navbar />}
       <Routes>
+        <Route path="/" element={<Navigate to="/signup" replace />} />
+
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
@@ -34,7 +36,7 @@ function AppWrapper() {
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<div>Home - use the links above</div>} />
+        <Route path="*" element={<Navigate to="/signup" replace />} />
       </Routes>
     </>
   );
