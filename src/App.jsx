@@ -4,8 +4,9 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import Homepage from "./pages/Homepage";   
 import ProtectedRoute from "./components/ProtectedRoute";
-import Navbar from "./components/Navbar"; 
+import Navbar from "./components/Navbar";
 
 function AppWrapper() {
   const location = useLocation();
@@ -16,6 +17,7 @@ function AppWrapper() {
     <>
       {!hideNavbar && <Navbar />}
       <Routes>
+        <Route path="/" element={<Homepage />} />   
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
@@ -34,7 +36,7 @@ function AppWrapper() {
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<div>Home - use the links above</div>} />
+        <Route path="*" element={<Homepage />} />  
       </Routes>
     </>
   );
