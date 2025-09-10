@@ -24,7 +24,7 @@ export default function LoginPage() {
     <div className="auth-container">
       <div className="auth-card">
         <img
-          src="public/1.png" 
+          src="/1.png" 
           alt="Logo"
           style={{ width: "150px", height: "150px", marginBottom: "10px" }}
         />

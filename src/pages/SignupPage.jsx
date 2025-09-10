@@ -44,7 +44,7 @@ export default function SignupPage() {
     <div className="auth-container flex items-center justify-center min-h-screen px-4">
       <div className="auth-card bg-white p-6 rounded-lg shadow-lg flex flex-col gap-4 w-full max-w-md">
         <img
-          src="public/1.png"
+          src="/1.png"
           alt="Logo"
           style={{ width: "130px", height: "130px", margin: "0"}}
         />
