@@ -1,6 +1,8 @@
 import { useState } from "react";
 import OpenAI from "openai";
 import "./Chatbot.css"; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faComment} from "@fortawesome/free-solid-svg-icons";
 
 export default function Chatbot({ darkMode }) {
   const [open, setOpen] = useState(false);
@@ -43,7 +45,7 @@ export default function Chatbot({ darkMode }) {
   return (
     <div className={`chatbot-container ${darkMode ? "dark" : ""}`}>
       <button className="chatbot-toggle" onClick={() => setOpen(!open)}>
-        {open ? "✖" : "Sober friend"}
+        {open ? "✖" : <FontAwesomeIcon icon={faComment}  />}
       </button>
 
       {open && (
