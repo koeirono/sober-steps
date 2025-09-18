@@ -46,10 +46,24 @@ export default function DashboardPage() {
 
   const location = useLocation();
 
-  useEffect(() => {
+ useEffect(() => {
+  const fetchUserName = async () => {
     const user = auth.currentUser;
-    if (user) setUserName(user.displayName || user.email);
-  }, []);
+    if (!user) return;
+
+    if (user.displayName) {
+      setUserName(user.displayName);
+    } else {
+      const docSnap = await getDoc(doc(db, "users", user.uid));
+      if (docSnap.exists()) {
+        setUserName(docSnap.data().username || "");
+      }
+    }
+  };
+
+  fetchUserName();
+}, []);
+
 
   const calculateStreak = (dates) => {
     if (!dates || dates.length === 0) return 0;
@@ -57,7 +71,8 @@ export default function DashboardPage() {
     let streak = 1;
     for (let i = 1; i < sorted.length; i++) {
       const diff =
-        (new Date(sorted[i - 1]) - new Date(sorted[i])) / (1000 * 60 * 60 * 24);
+        (new Date(sorted[i - 1]) - new Date(sorted[i])) /
+        (1000 * 60 * 60 * 24);
       if (diff === 1) streak++;
       else break;
     }
@@ -106,7 +121,7 @@ export default function DashboardPage() {
     try {
       const newNote = {
         text: notes,
-        date: getLocalDate(),
+        date: new Date().toISOString().slice(0, 10),
       };
       const docRef = await addDoc(
         collection(db, "users", user.uid, "notes"),
@@ -139,7 +154,10 @@ export default function DashboardPage() {
     if (!user) return;
     const updated = { ...addictions, [add]: !addictions[add] };
     setAddictions(updated);
-    await setDoc(doc(db, "users", user.uid, "dashboard", "addictions"), updated);
+    await setDoc(
+      doc(db, "users", user.uid, "dashboard", "addictions"),
+      updated
+    );
   };
 
   const addCustomAddiction = async () => {
@@ -149,7 +167,11 @@ export default function DashboardPage() {
     const updatedCustom = [...customAddictions, newCustom];
     setCustomAddictions(updatedCustom);
     setNewCustom("");
-    const updatedAdd = { ...addictions, Other: true, customList: updatedCustom };
+    const updatedAdd = {
+      ...addictions,
+      Other: true,
+      customList: updatedCustom,
+    };
     setAddictions(updatedAdd);
     await setDoc(
       doc(db, "users", user.uid, "dashboard", "addictions"),
@@ -183,7 +205,11 @@ export default function DashboardPage() {
   };
 
   const getLocalDate = () => {
-    return new Date().toLocaleDateString("en-CA"); // yyyy-mm-dd in local timezone
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   const logToday = async () => {
@@ -205,7 +231,9 @@ export default function DashboardPage() {
     if (!user) return;
     setLogDates([]);
     setStreak(0);
-    await setDoc(doc(db, "users", user.uid, "dashboard", "logs"), { dates: [] });
+    await setDoc(doc(db, "users", user.uid, "dashboard", "logs"), {
+      dates: [],
+    });
     toast.info("Logs reset!");
   };
 
@@ -224,6 +252,7 @@ export default function DashboardPage() {
     <div className={`dashboard ${darkMode ? "dark" : "light"}`}>
       <ToastContainer position="top-right" autoClose={3000} />
 
+      {/* Sidebar */}
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
           {!collapsed && <h2 className="logo">SoberSteps</h2>}
@@ -237,19 +266,25 @@ export default function DashboardPage() {
 
         <div className="sidebar-content">
           <ul>
-            <li className={location.pathname === "/dashboard" ? "active" : ""}>
+            <li
+              className={location.pathname === "/dashboard" ? "active" : ""}
+            >
               <Link to="/dashboard">
                 <FontAwesomeIcon icon={faHome} />
                 {!collapsed && <span>Dashboard</span>}
               </Link>
             </li>
-            <li className={location.pathname === "/progress" ? "active" : ""}>
+            <li
+              className={location.pathname === "/progress" ? "active" : ""}
+            >
               <Link to="/progress">
                 <FontAwesomeIcon icon={faChartBar} />
                 {!collapsed && <span>Progress</span>}
               </Link>
             </li>
-            <li className={location.pathname === "/settings" ? "active" : ""}>
+            <li
+              className={location.pathname === "/settings" ? "active" : ""}
+            >
               <Link to="/settings">
                 <FontAwesomeIcon icon={faGear} />
                 {!collapsed && <span>Settings</span>}
@@ -271,7 +306,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="main">
-        <h1>Welcome Back, {userName}!</h1>
+        <h1>Welcome, {userName}!</h1>
 
         <section className="card">
           <h2>Streak</h2>
@@ -282,8 +317,23 @@ export default function DashboardPage() {
           </button>
           <Calendar
             tileClassName={({ date }) => {
-              const localDate = date.toLocaleDateString("en-CA"); // local yyyy-mm-dd
-              return logDates.includes(localDate) ? "logged-day" : "";
+              const iso = date.toISOString().slice(0, 10);
+
+              if (logDates.includes(iso)) return "logged-day";
+
+              if (logDates.length > 0) {
+                const sorted = [...logDates].sort(
+                  (a, b) => new Date(a) - new Date(b)
+                );
+                const lastLog = new Date(sorted[sorted.length - 1]);
+                const nextDate = new Date(lastLog);
+                nextDate.setDate(lastLog.getDate() + 1);
+                if (iso === nextDate.toISOString().slice(0, 10)) {
+                  return "next-day";
+                }
+              }
+
+              return "";
             }}
           />
         </section>
@@ -318,12 +368,16 @@ export default function DashboardPage() {
 
         <section className="card">
           <h2>
-            <FontAwesomeIcon icon={faExclamationTriangle} className="icon" />{" "}
+            <FontAwesomeIcon
+              icon={faExclamationTriangle}
+              className="icon"
+            />{" "}
             Addictions
           </h2>
 
           <button onClick={() => toggleAddiction("Other")}>
-            <FontAwesomeIcon icon={faPlus} /> {!collapsed && " Add Addiction"}
+            <FontAwesomeIcon icon={faPlus} />{" "}
+            {!collapsed && " Add Addiction"}
           </button>
 
           <div className="addiction-list">
