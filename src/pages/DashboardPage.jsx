@@ -46,23 +46,23 @@ export default function DashboardPage() {
 
   const location = useLocation();
 
- useEffect(() => {
-  const fetchUserName = async () => {
-    const user = auth.currentUser;
-    if (!user) return;
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
 
-    if (user.displayName) {
-      setUserName(user.displayName);
-    } else {
-      const docSnap = await getDoc(doc(db, "users", user.uid));
-      if (docSnap.exists()) {
-        setUserName(docSnap.data().username || "");
+      if (user.displayName) {
+        setUserName(user.displayName);
+      } else {
+        const docSnap = await getDoc(doc(db, "users", user.uid));
+        if (docSnap.exists()) {
+          setUserName(docSnap.data().username || "");
+        }
       }
-    }
-  };
+    };
 
-  fetchUserName();
-}, []);
+    fetchUserName();
+  }, []);
 
 
   const calculateStreak = (dates) => {
@@ -212,6 +212,7 @@ export default function DashboardPage() {
     return `${year}-${month}-${day}`;
   };
 
+
   const logToday = async () => {
     const user = auth.currentUser;
     if (!user) return;
@@ -317,23 +318,8 @@ export default function DashboardPage() {
           </button>
           <Calendar
             tileClassName={({ date }) => {
-              const iso = date.toISOString().slice(0, 10);
-
-              if (logDates.includes(iso)) return "logged-day";
-
-              if (logDates.length > 0) {
-                const sorted = [...logDates].sort(
-                  (a, b) => new Date(a) - new Date(b)
-                );
-                const lastLog = new Date(sorted[sorted.length - 1]);
-                const nextDate = new Date(lastLog);
-                nextDate.setDate(lastLog.getDate() + 1);
-                if (iso === nextDate.toISOString().slice(0, 10)) {
-                  return "next-day";
-                }
-              }
-
-              return "";
+              const localDate = date.toLocaleDateString("en-CA");
+              return logDates.includes(localDate) ? "logged-day" : "";
             }}
           />
         </section>
