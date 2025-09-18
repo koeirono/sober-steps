@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-/* ===== BASE STYLES ===== */
 body, html {
   margin: 0;
   padding: 0;
@@ -15,7 +14,6 @@ button {
   transition: background 0.3s, color 0.3s;
 }
 
-/* ===== AUTH PAGES ===== */
 .auth-container {
   display: flex;
   justify-content: center;
@@ -104,7 +102,6 @@ button {
   color: #00f2fe;
 }
 
-/* ===== DASHBOARD & ADMIN PAGES ===== */
 .dashboard {
   display: flex;
   min-height: 100vh;
@@ -118,6 +115,7 @@ button {
   justify-content: space-between;
   transition: background 0.3s, color 0.3s, width 0.3s;
 }
+
 
 .sidebar.collapsed {
   width: 80px;
@@ -133,6 +131,7 @@ button {
 .sidebar .logo {
   font-size: 24px;
   font-weight: 600;
+  color:#8a8a8a
 }
 
 .sidebar button {
@@ -191,7 +190,6 @@ button {
   transition: background 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
-/* Tables */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -205,7 +203,6 @@ th, td {
   transition: background 0.3s, color 0.3s;
 }
 
-/* Buttons */
 button {
   padding: 8px 12px;
   border-radius: 8px;
@@ -219,7 +216,6 @@ button.delete {
   background-color: #ff4d4f;
 }
 
-/* Input fields */
 input[type="text"], textarea {
   padding: 10px;
   border-radius: 8px;
@@ -234,7 +230,6 @@ input[type="text"]:focus, textarea:focus {
   border-color: #4facfe;
 }
 
-/* Calendar styling */
 .react-calendar {
   width: 100%;
   border: none;
@@ -242,11 +237,10 @@ input[type="text"]:focus, textarea:focus {
 }
 
 .react-calendar__tile.logged-day {
-  background: #538cbe !important;
+  background: #08599f !important;
   color: #fff !important;
 }
 
-/* ===== DARK MODE ===== */
 body.dark, .dashboard.dark {
   background-color: #121212;
   color: #eee;
@@ -307,6 +301,6 @@ body.dark .auth-card .switch-auth a {
 }
 
 .dashboard.dark .react-calendar__tile.logged-day {
-  background: #00f2fe !important;
+  background: #7cc5f5 !important;
   color: #000 !important;
 }

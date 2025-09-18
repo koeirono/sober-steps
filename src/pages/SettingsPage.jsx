@@ -3,8 +3,6 @@ import { auth, db } from "../firebase";
 import { updateProfile, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { Link, useLocation } from "react-router-dom";
-
-// Font Awesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMoon,
@@ -25,21 +23,18 @@ export default function SettingsPage() {
   const [displayName, setDisplayName] = useState("");
   const [showProfileForm, setShowProfileForm] = useState(false);
 
-  // Password fields
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const location = useLocation();
 
-  // Load current user info
   useEffect(() => {
     if (auth.currentUser) {
       setDisplayName(auth.currentUser.displayName || "");
     }
   }, []);
 
-  // Update profile name
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     if (!displayName) return toast.error("Name cannot be empty");
@@ -57,7 +52,6 @@ export default function SettingsPage() {
     }
   };
 
-  // Change password
   const handleChangePassword = async () => {
     const user = auth.currentUser;
     if (!user) return toast.error("No user logged in");
@@ -79,7 +73,6 @@ export default function SettingsPage() {
     }
   };
 
-  // Logout
   const handleLogout = async () => {
     try {
       await auth.signOut();
@@ -95,7 +88,6 @@ export default function SettingsPage() {
     <div className={`dashboard ${darkMode ? "dark" : "light"}`}>
       <ToastContainer position="top-right" autoClose={3000} />
 
-      {/* Sidebar */}
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
           {!collapsed && <h2 className="logo">SoberSteps</h2>}
@@ -138,11 +130,9 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Main content */}
       <div className="main">
         <h1>Settings</h1>
 
-        {/* Profile Section */}
         <section className="card">
           <h2>Profile</h2>
           <p>Update your account information.</p>
@@ -166,7 +156,6 @@ export default function SettingsPage() {
           )}
         </section>
 
-        {/* Password Section */}
         <section className="card">
           <h2>Password</h2>
           <p>Change your account password.</p>
@@ -191,7 +180,6 @@ export default function SettingsPage() {
           <button onClick={handleChangePassword}>Change Password</button>
         </section>
 
-        {/* Preferences */}
         <section className="card">
           <h2>Preferences</h2>
           <p>Dark mode: {darkMode ? "Enabled" : "Disabled"}</p>

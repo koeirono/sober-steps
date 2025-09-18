@@ -23,7 +23,6 @@ export default function AdminDashboardPage() {
   const [editingNote, setEditingNote] = useState(null);
   const [editValue, setEditValue] = useState("");
 
-  // Fetch users and notes
   useEffect(() => {
     const fetchUsersAndNotes = async () => {
       try {
@@ -62,7 +61,6 @@ export default function AdminDashboardPage() {
     fetchUsersAndNotes();
   }, []);
 
-  // Delete Note
   const handleDeleteNote = async (noteId, userId) => {
     try {
       await deleteDoc(doc(db, "users", userId, "notes", noteId));
@@ -74,7 +72,6 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Save Edited User
   const handleSaveUser = async (id) => {
     try {
       await updateDoc(doc(db, "users", id), { displayName: editValue });
@@ -90,7 +87,6 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Save Edited Note
   const handleSaveNote = async (noteId, userId) => {
     try {
       await updateDoc(doc(db, "users", userId, "notes", noteId), {
@@ -108,7 +104,6 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // Logout
   const handleLogout = async () => {
     try {
       await auth.signOut();

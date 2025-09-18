@@ -8,7 +8,6 @@ import {
   doc,
   getDoc,
   setDoc,
-  updateDoc,
 } from "firebase/firestore";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -30,7 +29,7 @@ import {
   faTrash,
   faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
-import Chatbot from "../components/Chatbot"; 
+import Chatbot from "../components/Chatbot";
 import "./Dashboard.css";
 
 export default function DashboardPage() {
@@ -70,7 +69,6 @@ export default function DashboardPage() {
       const user = auth.currentUser;
       if (!user) return;
       try {
-
         const notesSnap = await getDocs(
           collection(db, "users", user.uid, "notes")
         );
@@ -108,7 +106,7 @@ export default function DashboardPage() {
     try {
       const newNote = {
         text: notes,
-        date: new Date().toISOString().slice(0, 10),
+        date: getLocalDate(),
       };
       const docRef = await addDoc(
         collection(db, "users", user.uid, "notes"),
@@ -153,7 +151,10 @@ export default function DashboardPage() {
     setNewCustom("");
     const updatedAdd = { ...addictions, Other: true, customList: updatedCustom };
     setAddictions(updatedAdd);
-    await setDoc(doc(db, "users", user.uid, "dashboard", "addictions"), updatedAdd);
+    await setDoc(
+      doc(db, "users", user.uid, "dashboard", "addictions"),
+      updatedAdd
+    );
     toast.success("Custom addiction added!");
   };
 
@@ -165,7 +166,10 @@ export default function DashboardPage() {
     setCustomAddictions(updatedCustom);
     const updatedAdd = { ...addictions, customList: updatedCustom };
     setAddictions(updatedAdd);
-    await setDoc(doc(db, "users", user.uid, "dashboard", "addictions"), updatedAdd);
+    await setDoc(
+      doc(db, "users", user.uid, "dashboard", "addictions"),
+      updatedAdd
+    );
     toast.info("Custom addiction deleted!");
   };
 
@@ -178,15 +182,21 @@ export default function DashboardPage() {
     toast.info("Addictions reset!");
   };
 
+  const getLocalDate = () => {
+    return new Date().toLocaleDateString("en-CA"); // yyyy-mm-dd in local timezone
+  };
+
   const logToday = async () => {
     const user = auth.currentUser;
     if (!user) return;
-    const today = new Date().toISOString().slice(0, 10);
+    const today = getLocalDate();
     if (logDates.includes(today)) return toast.info("Already logged today");
     const updated = [...logDates, today];
     setLogDates(updated);
     setStreak(calculateStreak(updated));
-    await setDoc(doc(db, "users", user.uid, "dashboard", "logs"), { dates: updated });
+    await setDoc(doc(db, "users", user.uid, "dashboard", "logs"), {
+      dates: updated,
+    });
     toast.success("Logged today!");
   };
 
@@ -217,7 +227,10 @@ export default function DashboardPage() {
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
           {!collapsed && <h2 className="logo">SoberSteps</h2>}
-          <button className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
+          <button
+            className="collapse-btn"
+            onClick={() => setCollapsed(!collapsed)}
+          >
             {collapsed ? "▶" : "◀"}
           </button>
         </div>
@@ -264,22 +277,25 @@ export default function DashboardPage() {
           <h2>Streak</h2>
           <p>{streak} days</p>
           <button onClick={logToday}>Log Today</button>
-          <button className="delete" onClick={resetLogs}>Reset Logs</button>
+          <button className="delete" onClick={resetLogs}>
+            Reset Logs
+          </button>
           <Calendar
-            tileClassName={({ date }) =>
-              logDates.includes(date.toISOString().slice(0, 10)) ? "logged-day" : ""
-            }
+            tileClassName={({ date }) => {
+              const localDate = date.toLocaleDateString("en-CA"); // local yyyy-mm-dd
+              return logDates.includes(localDate) ? "logged-day" : "";
+            }}
           />
         </section>
 
         <section className="card">
-          <h2> Notes</h2>
+          <h2>Notes</h2>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="Write about your journey"
           />
-          <button onClick={saveNote}>💾 Save</button>
+          <button onClick={saveNote}>Save</button>
           <div className="previous-notes">
             {allNotes.length === 0 ? (
               <p>No notes</p>
@@ -288,7 +304,12 @@ export default function DashboardPage() {
                 <div key={note.id} className="note-card">
                   <small>{note.date}</small>
                   <p>{note.text}</p>
-                  <button className="delete" onClick={() => deleteNote(note.id)}>Delete</button>
+                  <button
+                    className="delete"
+                    onClick={() => deleteNote(note.id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               ))
             )}
@@ -296,18 +317,27 @@ export default function DashboardPage() {
         </section>
 
         <section className="card">
-          <h2><FontAwesomeIcon icon={faExclamationTriangle} className="icon" /> Addictions</h2>
+          <h2>
+            <FontAwesomeIcon icon={faExclamationTriangle} className="icon" />{" "}
+            Addictions
+          </h2>
 
           <button onClick={() => toggleAddiction("Other")}>
             <FontAwesomeIcon icon={faPlus} /> {!collapsed && " Add Addiction"}
           </button>
 
           <div className="addiction-list">
-            {[{ name: "Alcohol", icon: faWineBottle },
+            {[
+              { name: "Alcohol", icon: faWineBottle },
               { name: "Nicotine", icon: faSmoking },
-              { name: "Marijuana", icon: faCannabis }].map((item) => (
+              { name: "Marijuana", icon: faCannabis },
+            ].map((item) => (
               <label key={item.name} className="addiction-item">
-                <input type="checkbox" checked={addictions[item.name] || false} onChange={() => toggleAddiction(item.name)} />
+                <input
+                  type="checkbox"
+                  checked={addictions[item.name] || false}
+                  onChange={() => toggleAddiction(item.name)}
+                />
                 <FontAwesomeIcon icon={item.icon} className="icon" />
                 <span>{item.name}</span>
               </label>
@@ -316,14 +346,33 @@ export default function DashboardPage() {
 
           {addictions.Other && (
             <div className="custom-addiction">
-              <input type="text" placeholder="Enter custom addiction" value={newCustom} onChange={(e) => setNewCustom(e.target.value)} />
-              <button onClick={addCustomAddiction} disabled={!newCustom.trim()}><FontAwesomeIcon icon={faPlus} /> Add</button>
+              <input
+                type="text"
+                placeholder="Enter custom addiction"
+                value={newCustom}
+                onChange={(e) => setNewCustom(e.target.value)}
+              />
+              <button
+                onClick={addCustomAddiction}
+                disabled={!newCustom.trim()}
+              >
+                <FontAwesomeIcon icon={faPlus} /> Add
+              </button>
               <div className="addiction-list">
                 {customAddictions.map((a, i) => (
                   <label key={i} className="addiction-item">
-                    <input type="checkbox" checked={addictions[a] || true} onChange={() => toggleAddiction(a)} />
+                    <input
+                      type="checkbox"
+                      checked={addictions[a] || true}
+                      onChange={() => toggleAddiction(a)}
+                    />
                     <span>{a}</span>
-                    <button className="delete" onClick={() => deleteCustomAddiction(i)}><FontAwesomeIcon icon={faTrash} /></button>
+                    <button
+                      className="delete"
+                      onClick={() => deleteCustomAddiction(i)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
                   </label>
                 ))}
               </div>
@@ -333,11 +382,17 @@ export default function DashboardPage() {
           <h4>Tracking</h4>
           <ul className="tracking-list">
             {Object.keys(addictions)
-              .filter((k) => addictions[k] && k !== "Other" && k !== "customList")
-              .map((a, i) => <li key={i}>{a}</li>)}
+              .filter(
+                (k) => addictions[k] && k !== "Other" && k !== "customList"
+              )
+              .map((a, i) => (
+                <li key={i}>{a}</li>
+              ))}
           </ul>
 
-          <button className="delete" onClick={resetAddictions}><FontAwesomeIcon icon={faTrash} /> Reset Addictions</button>
+          <button className="delete" onClick={resetAddictions}>
+            <FontAwesomeIcon icon={faTrash} /> Reset Addictions
+          </button>
         </section>
       </div>
 

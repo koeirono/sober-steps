@@ -1,4 +1,4 @@
-/* ===== GLOBAL ===== */
+
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
@@ -7,7 +7,6 @@ body {
   color: #333;
 }
 
-/* ===== DASHBOARD LAYOUT ===== */
 .dashboard {
   display: flex;
   min-height: 100vh;
@@ -23,7 +22,6 @@ h1 {
   margin-bottom: 30px;
 }
 
-/* ===== SIDEBAR ===== */
 .sidebar {
   width: 250px;
   min-height: 100vh;
@@ -86,7 +84,6 @@ h1 {
   background: rgba(0,0,0,0.05);
 }
 
-/* ===== CARDS ===== */
 .card {
   background: #fff;
   padding: 25px 30px;
@@ -101,7 +98,6 @@ h1 {
   font-size: 22px;
 }
 
-/* ===== PROGRESS CHART ===== */
 .chart-container {
   width: 100%;
   max-width: 800px;
@@ -121,7 +117,6 @@ h1 {
   color: #333;
 }
 
-/* ===== DARK MODE ===== */
 .dashboard.dark,
 body.dark {
   background: #121212;
@@ -160,7 +155,6 @@ body.dark {
   color: #eee;
 }
 
-/* ===== RESPONSIVE ===== */
 @media screen and (max-width: 900px) {
   .dashboard {
     flex-direction: column;

@@ -19,7 +19,6 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Get user document from Firestore
       const userDocRef = doc(db, "users", user.uid);
       const userDocSnap = await getDoc(userDocRef);
 
@@ -30,7 +29,6 @@ export default function LoginPage() {
 
       const userData = userDocSnap.data();
 
-      // Redirect based on admin role
       if (userData.isAdmin) {
         navigate("/admin");
       } else {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import OpenAI from "openai";
-import "./Chatbot.css"; // floating styles
+import "./Chatbot.css"; 
 
 export default function Chatbot({ darkMode }) {
   const [open, setOpen] = useState(false);
@@ -18,7 +18,7 @@ export default function Chatbot({ darkMode }) {
     try {
       const client = new OpenAI({
         apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-        dangerouslyAllowBrowser: true, // ⚠️ allows browser usage
+        dangerouslyAllowBrowser: true, 
       });
 
       const res = await client.chat.completions.create({
@@ -43,7 +43,7 @@ export default function Chatbot({ darkMode }) {
   return (
     <div className={`chatbot-container ${darkMode ? "dark" : ""}`}>
       <button className="chatbot-toggle" onClick={() => setOpen(!open)}>
-        {open ? "✖" : "💬 AI Coach"}
+        {open ? "✖" : "Sober friend"}
       </button>
 
       {open && (
@@ -60,7 +60,7 @@ export default function Chatbot({ darkMode }) {
             <input
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="Ask your AI coach..."
+              placeholder="Ask your pal..."
               onKeyDown={e => e.key === "Enter" && handleSend()}
             />
             <button onClick={handleSend}>Send</button>
