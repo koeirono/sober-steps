@@ -110,7 +110,9 @@ export default function SignupPage() {
           Already have an account?{" "}
           <a href="/login" className="text-black hover:underline">
             Login
-          </a>
+          </a><br />
+          Learn more about us <a href="/">Home</a>
+
         </p>
 
         <ThemeToggle />

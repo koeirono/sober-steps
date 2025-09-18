@@ -4,14 +4,24 @@ import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
-import Homepage from "./pages/Homepage";   
+import Homepage from "./pages/Homepage";
+import ProgressPage from "./pages/ProgressPage";
+import SettingsPage from "./pages/SettingsPage";  
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 
 function AppWrapper() {
   const location = useLocation();
 
-  const hideNavbar = location.pathname === "/login" || location.pathname === "/signup";
+  // hide navbar on these pages
+  const hideNavbar =
+    location.pathname === "/login" ||
+    location.pathname === "/signup" ||
+    location.pathname === "/" ||
+    location.pathname === "/dashboard" ||
+    location.pathname === "/progress" ||
+    location.pathname === "/settings" ||
+    location.pathname === "/admin";
 
   return (
     <>
@@ -20,6 +30,7 @@ function AppWrapper() {
         <Route path="/" element={<Homepage />} />   
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
+        
         <Route
           path="/dashboard"
           element={
@@ -28,6 +39,25 @@ function AppWrapper() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/progress"
+          element={
+            <ProtectedRoute>
+              <ProgressPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/admin"
           element={
@@ -36,6 +66,7 @@ function AppWrapper() {
             </ProtectedRoute>
           }
         />
+
         <Route path="*" element={<Homepage />} />  
       </Routes>
     </>

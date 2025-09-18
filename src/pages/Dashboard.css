@@ -1,0 +1,287 @@
+:root {
+  --primary: #4cafef;
+  --secondary: #f5f5f5;
+  --text: #333;
+  --bg: #fff;
+  --card-bg: #fafafa;
+  --danger: #e74c3c;
+}
+
+.dark {
+  --primary: #2196f3;
+  --secondary: #1e1e1e;
+  --text: #f5f5f5;
+  --bg: #121212;
+  --card-bg: #1c1c1c;
+  --danger: #ff6b6b;
+}
+
+/* ===== Dashboard Layout ===== */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 240px;
+  background: var(--secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  transition: width 0.3s ease;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.collapse-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.sidebar-content ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.sidebar-content li {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.sidebar-content li:hover {
+  color: var(--primary);
+}
+
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.dark-toggle,
+.logout-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: opacity 0.2s;
+}
+
+.dark-toggle:hover,
+.logout-btn:hover {
+  opacity: 0.85;
+}
+
+/* ===== Main Content ===== */
+.main {
+  flex: 1;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.main h1 {
+  grid-column: 1 / -1;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.main p {
+  grid-column: 1 / -1;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: auto;
+  max-height: 600px;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.card button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.card button:hover {
+  background: #3a9fe0;
+  transform: scale(1.05);
+}
+
+.card button.delete {
+  background: var(--danger);
+}
+
+.card button.delete:hover {
+  background: #c0392b;
+}
+
+/* ===== Notes ===== */
+textarea {
+  width: 100%;
+  min-height: 120px;
+  border-radius: 8px;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  resize: vertical;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+}
+
+.previous-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.note-card {
+  background: var(--bg);
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.note-card button {
+  width: fit-content;
+  align-self: flex-end;
+}
+
+/* ===== Addictions ===== */
+.addiction-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.addiction-item label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.addiction-item input[type="text"] {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: var(--bg);
+  color: var(--text);
+  width: 100%;
+}
+
+.addiction-tracking {
+  margin-top: 0.5rem;
+}
+
+.addiction-tracking ul {
+  list-style: disc inside;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.addiction-tracking li {
+  margin: 0.2rem 0;
+}
+
+/* ===== Calendar ===== */
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1rem;
+  font-family: inherit;
+}
+
+.react-calendar__tile {
+  border-radius: 6px;
+  padding: 0.6rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.react-calendar__tile--now {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+.react-calendar__tile--active {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+.logged-day {
+  background: var(--primary) !important;
+  color: #fff !important;
+  border-radius: 50%;
+}
+
+/* ===== Streak calendar container ===== */
+.streak-calendar {
+  margin-top: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}

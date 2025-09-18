@@ -1,37 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-body {
+
+/* ===== BASE STYLES ===== */
+body, html {
+  margin: 0;
+  padding: 0;
   font-family: 'Poppins', sans-serif;
   background-color: #f5f6fa;
   color: #333;
-  line-height: 1.6;
+  transition: background 0.3s, color 0.3s;
 }
 
+button {
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ===== AUTH PAGES ===== */
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  padding: 16px;
-  transition: background 0.3s; 
-}
-
-
-body.light .auth-container {
-  background: #f5f6fa; 
-}
-
-body.dark .auth-container {
-  background: #121212;
+  min-height: 100vh;
+  padding: 20px;
+  transition: background 0.3s, color 0.3s;
 }
 
 .auth-card {
-  background: #ffffff;
-  padding: 40px 70px;
+  background: #fff;
+  padding: 40px 30px;
   border-radius: 20px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 400px;
   text-align: center;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.auth-card img {
+  border-radius: 50%;
+  margin-bottom: 20px;
 }
 
 .auth-card h2 {
@@ -40,189 +47,266 @@ body.dark .auth-container {
 }
 
 .auth-card .subtitle {
-  margin-bottom: 20px;
   font-size: 14px;
-  color: #666;
-}
-
-.auth-card input {
-  width: 100%;
-  padding: 12px 14px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 14px;
-  outline: none;
-  transition: border 0.2s;
-}
-
-.auth-card input:focus {
-  border-color: #333;
-}
-
-.auth-card button {
-  width: 100%;
-  padding: 12px;
-  background: #333;
-  color: #fff;
-  font-size: 15px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background 0.3s;
-}
-
-.auth-card button:hover {
-  background: #000;
-}
-
-.auth-card .error {
-  color: red;
-  font-size: 13px;
-  margin: 5px 0;
-}
-
-.switch-auth {
-  margin-top: 16px;
-  font-size: 16px;
-}
-.switch-auth a {
-  color: #333;
-  font-weight: bold;
+  margin-bottom: 25px;
+  color: #555;
 }
 
 .auth-card form {
   display: flex;
   flex-direction: column;
-  align-items: center;  
+  gap: 15px;
 }
 
-.auth-card input,
+.auth-card input {
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  outline: none;
+  transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+.auth-card input:focus {
+  border-color: #4facfe;
+}
+
 .auth-card button {
-  max-width: 300px;   
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #4facfe;
+  color: #fff;
+  font-size: 16px;
 }
 
-body.light {
-  background-color: #f5f6fa;
-  color: #333;
+.auth-card button:hover {
+  background: #00f2fe;
 }
 
-body.light .auth-card {
-  background: #fff;
-  color: #333;
+.auth-card .error {
+  color: #ff4d4f;
+  font-size: 13px;
 }
 
-body.dark {
+.auth-card .switch-auth {
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.auth-card .switch-auth a {
+  color: #4facfe;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.auth-card .switch-auth a:hover {
+  color: #00f2fe;
+}
+
+/* ===== DASHBOARD & ADMIN PAGES ===== */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background 0.3s, color 0.3s, width 0.3s;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar .sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.sidebar .logo {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.sidebar button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: inherit;
+}
+
+.sidebar-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-content li {
+  padding: 15px 20px;
+}
+
+.sidebar-content li.active {
+  background-color: #4facfe;
+  color: #fff;
+}
+
+.sidebar-content li a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.main h1, .main h2, .main h4 {
+  margin-top: 0;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Buttons */
+button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #4facfe;
+  color: #fff;
+  font-size: 14px;
+}
+
+button.delete {
+  background-color: #ff4d4f;
+}
+
+/* Input fields */
+input[type="text"], textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 14px;
+  outline: none;
+  transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+input[type="text"]:focus, textarea:focus {
+  border-color: #4facfe;
+}
+
+/* Calendar styling */
+.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.react-calendar__tile.logged-day {
+  background: #538cbe !important;
+  color: #fff !important;
+}
+
+/* ===== DARK MODE ===== */
+body.dark, .dashboard.dark {
   background-color: #121212;
   color: #eee;
 }
 
-body.dark .auth-card {
-  background: #1e1e1e;
+body.dark .auth-card,
+.dashboard.dark .card {
+  background-color: #1e1e1e;
+  color: #eee;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+body.dark .auth-card input,
+.dashboard.dark input[type="text"],
+.dashboard.dark textarea {
+  background-color: #2a2a2a;
+  color: #eee;
+  border: 1px solid #444;
+}
+
+body.dark .auth-card input:focus,
+.dashboard.dark input[type="text"]:focus,
+.dashboard.dark textarea:focus {
+  border-color: #00f2fe;
+}
+
+body.dark .auth-card .switch-auth a {
+  color: #00f2fe;
+}
+
+.dashboard.dark .sidebar {
+  background-color: #1e1e1e;
   color: #eee;
 }
 
-body.dark input {
-  background: #2a2a2a;
+.dashboard.dark .sidebar-content li.active {
+  background-color: #00f2fe;
+  color: #000;
+}
+
+.dashboard.dark .sidebar button {
+  color: #eee;
+}
+
+.dashboard.dark th, 
+.dashboard.dark td {
   border: 1px solid #444;
   color: #eee;
 }
 
-body.dark input:focus {
-  border-color: #888;
+.dashboard.dark button {
+  background-color: #4facfe;
+  color: #fff;
 }
 
-body.dark button {
-  background: #eee;
-  color: #121212;
+.dashboard.dark button.delete {
+  background-color: #ff4d4f;
 }
 
-body.dark button:hover {
-  background: #ddd;
-}
-
-
-body.dark .switch-auth a {
-  color: #f1fffe;  
-  font-weight: bold;
-  text-decoration: underline; 
-}
-
-.toggler-container {
-  width: 50px;
-  height: 25px;
-  background: #ddd;
-  border-radius: 25px;
-  cursor: pointer;
-  position: relative;
-  margin-top: 16px;
-  transition: background 0.3s;
-}
-
-.toggler-circle {
-  width: 21px;
-  height: 21px;
-  background: #fff;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s;
-}
-
-.toggler-circle.dark {
-  transform: translateX(25px);
-}
-
-body.dark .toggler-container {
-  background: #555;
-}
-body.dark .toggler-circle {
-  background: #eee;
-}
-
-.toggler-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px; 
-  cursor: pointer;
-  margin-top: 16px;
-}
-
-.toggler-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: inherit;
-}
-
-.toggler-container {
-  width: 50px;
-  height: 25px;
-  background: #ddd;
-  border-radius: 25px;
-  position: relative;
-  transition: background 0.3s;
-}
-
-.toggler-circle {
-  width: 21px;
-  height: 21px;
-  background: #fff;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s;
-}
-
-.toggler-circle.dark {
-  transform: translateX(25px);
-}
-
-body.dark .toggler-container {
-  background: #555;
-}
-body.dark .toggler-circle {
-  background: #eee;
+.dashboard.dark .react-calendar__tile.logged-day {
+  background: #00f2fe !important;
+  color: #000 !important;
 }
