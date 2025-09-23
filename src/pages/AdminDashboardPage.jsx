@@ -5,10 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMoon,
   faSun,
-  faHome,
-  faUsers,
-  faNoteSticky,
   faRightFromBracket,
+  faAngleLeft,
+  faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -120,7 +119,7 @@ export default function AdminDashboardPage() {
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
-          <div className="sidebar-top">
+        <div className="sidebar-top">
           {!collapsed && <img
             src="/1.png"
             alt="SoberSteps Logo"
@@ -130,7 +129,7 @@ export default function AdminDashboardPage() {
             className="collapse-btn"
             onClick={() => setCollapsed(!collapsed)}
           >
-            {collapsed ? "▶" : "◀"}
+            <FontAwesomeIcon icon={collapsed ? faAngleRight : faAngleLeft} />
           </button>
         </div>
 
@@ -180,7 +179,7 @@ export default function AdminDashboardPage() {
                         setEditValue(user.displayName || "");
                       }}
                     >
-                       Edit
+                      Edit
                     </button>
                   )}
                 </td>
@@ -215,7 +214,7 @@ export default function AdminDashboardPage() {
                 <td>
                   {editingNote === note.id ? (
                     <button onClick={() => handleSaveNote(note.id, note.userId)}>
-                       Save
+                      Save
                     </button>
                   ) : (
                     <button
@@ -224,12 +223,12 @@ export default function AdminDashboardPage() {
                         setEditValue(note.text || "");
                       }}
                     >
-                       Edit
+                      Edit
                     </button>
                   )}
-                   
+
                   <button onClick={() => handleDeleteNote(note.id, note.userId)}>
-                     Delete
+                    Delete
                   </button>
                 </td>
               </tr>

@@ -28,9 +28,12 @@ import {
   faPlus,
   faTrash,
   faExclamationTriangle,
-  faBell, 
- faCalendarCheck,
-} from "@fortawesome/free-solid-svg-icons";
+  faBell,
+  faCalendarCheck,
+  faAngleLeft,
+  faAngleRight,
+}
+  from "@fortawesome/free-solid-svg-icons";
 import Chatbot from "../components/Chatbot";
 import "./Dashboard.css";
 
@@ -245,35 +248,35 @@ export default function DashboardPage() {
     }
   };
 
-useEffect(() => {
-  const checkReminder = () => {
-    const now = new Date();
+  useEffect(() => {
+    const checkReminder = () => {
+      const now = new Date();
+      const today = getLocalDate();
+
+      const hoursEAT = (now.getUTCHours() + 3) % 24;
+
+      if ((hoursEAT === 8 || hoursEAT === 20) && !logDates.includes(today)) {
+        toast.info(
+          <div>
+            <FontAwesomeIcon icon={faBell} />  Don’t forget to log your progress today!
+          </div>
+        );
+      }
+    };
+
     const today = getLocalDate();
-
-    const hoursEAT = (now.getUTCHours() + 3) % 24;
-
-    if ((hoursEAT === 8 || hoursEAT === 20) && !logDates.includes(today)) {
+    if (!logDates.includes(today)) {
       toast.info(
         <div>
-          <FontAwesomeIcon icon={faBell} />  Don’t forget to log your progress today!
+          <FontAwesomeIcon icon={faCalendarCheck} />  Welcome back! Don’t forget to log your progress today.
         </div>
       );
     }
-  };
 
-  const today = getLocalDate();
-  if (!logDates.includes(today)) {
-    toast.info(
-      <div>
-        <FontAwesomeIcon icon={faCalendarCheck} />  Welcome back! Don’t forget to log your progress today.
-      </div>
-    );
-  }
+    const interval = setInterval(checkReminder, 1000 * 60);
 
-  const interval = setInterval(checkReminder, 1000 * 60);
-
-  return () => clearInterval(interval);
-}, [logDates]);
+    return () => clearInterval(interval);
+  }, [logDates]);
 
 
   return (
@@ -291,7 +294,7 @@ useEffect(() => {
             className="collapse-btn"
             onClick={() => setCollapsed(!collapsed)}
           >
-            {collapsed ? "▶" : "◀"}
+            <FontAwesomeIcon icon={collapsed ? faAngleRight : faAngleLeft} />
           </button>
         </div>
 
