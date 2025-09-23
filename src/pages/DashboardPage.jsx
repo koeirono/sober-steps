@@ -28,6 +28,8 @@ import {
   faPlus,
   faTrash,
   faExclamationTriangle,
+  faBell, 
+ faCalendarCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import Chatbot from "../components/Chatbot";
 import "./Dashboard.css";
@@ -64,15 +66,13 @@ export default function DashboardPage() {
     fetchUserName();
   }, []);
 
-
   const calculateStreak = (dates) => {
     if (!dates || dates.length === 0) return 0;
     const sorted = [...dates].sort((a, b) => new Date(b) - new Date(a));
     let streak = 1;
     for (let i = 1; i < sorted.length; i++) {
       const diff =
-        (new Date(sorted[i - 1]) - new Date(sorted[i])) /
-        (1000 * 60 * 60 * 24);
+        (new Date(sorted[i - 1]) - new Date(sorted[i])) / (1000 * 60 * 60 * 24);
       if (diff === 1) streak++;
       else break;
     }
@@ -154,10 +154,7 @@ export default function DashboardPage() {
     if (!user) return;
     const updated = { ...addictions, [add]: !addictions[add] };
     setAddictions(updated);
-    await setDoc(
-      doc(db, "users", user.uid, "dashboard", "addictions"),
-      updated
-    );
+    await setDoc(doc(db, "users", user.uid, "dashboard", "addictions"), updated);
   };
 
   const addCustomAddiction = async () => {
@@ -212,7 +209,6 @@ export default function DashboardPage() {
     return `${year}-${month}-${day}`;
   };
 
-
   const logToday = async () => {
     const user = auth.currentUser;
     if (!user) return;
@@ -249,14 +245,48 @@ export default function DashboardPage() {
     }
   };
 
+useEffect(() => {
+  const checkReminder = () => {
+    const now = new Date();
+    const today = getLocalDate();
+
+    const hoursEAT = (now.getUTCHours() + 3) % 24;
+
+    if ((hoursEAT === 8 || hoursEAT === 20) && !logDates.includes(today)) {
+      toast.info(
+        <div>
+          <FontAwesomeIcon icon={faBell} />  Don’t forget to log your progress today!
+        </div>
+      );
+    }
+  };
+
+  const today = getLocalDate();
+  if (!logDates.includes(today)) {
+    toast.info(
+      <div>
+        <FontAwesomeIcon icon={faCalendarCheck} />  Welcome back! Don’t forget to log your progress today.
+      </div>
+    );
+  }
+
+  const interval = setInterval(checkReminder, 1000 * 60);
+
+  return () => clearInterval(interval);
+}, [logDates]);
+
+
   return (
     <div className={`dashboard ${darkMode ? "dark" : "light"}`}>
       <ToastContainer position="top-right" autoClose={3000} />
 
-      {/* Sidebar */}
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
-          {!collapsed && <h2 className="logo">SoberSteps</h2>}
+          {!collapsed && <img
+            src="/1.png"
+            alt="SoberSteps Logo"
+            className="logo-img"
+          />}
           <button
             className="collapse-btn"
             onClick={() => setCollapsed(!collapsed)}
@@ -267,25 +297,19 @@ export default function DashboardPage() {
 
         <div className="sidebar-content">
           <ul>
-            <li
-              className={location.pathname === "/dashboard" ? "active" : ""}
-            >
+            <li className={location.pathname === "/dashboard" ? "active" : ""}>
               <Link to="/dashboard">
                 <FontAwesomeIcon icon={faHome} />
                 {!collapsed && <span>Dashboard</span>}
               </Link>
             </li>
-            <li
-              className={location.pathname === "/progress" ? "active" : ""}
-            >
+            <li className={location.pathname === "/progress" ? "active" : ""}>
               <Link to="/progress">
                 <FontAwesomeIcon icon={faChartBar} />
                 {!collapsed && <span>Progress</span>}
               </Link>
             </li>
-            <li
-              className={location.pathname === "/settings" ? "active" : ""}
-            >
+            <li className={location.pathname === "/settings" ? "active" : ""}>
               <Link to="/settings">
                 <FontAwesomeIcon icon={faGear} />
                 {!collapsed && <span>Settings</span>}
@@ -354,16 +378,12 @@ export default function DashboardPage() {
 
         <section className="card">
           <h2>
-            <FontAwesomeIcon
-              icon={faExclamationTriangle}
-              className="icon"
-            />{" "}
+            <FontAwesomeIcon icon={faExclamationTriangle} className="icon" />{" "}
             Addictions
           </h2>
 
           <button onClick={() => toggleAddiction("Other")}>
-            <FontAwesomeIcon icon={faPlus} />{" "}
-            {!collapsed && " Add Addiction"}
+            <FontAwesomeIcon icon={faPlus} /> {!collapsed && " Add Addiction"}
           </button>
 
           <div className="addiction-list">
@@ -392,10 +412,7 @@ export default function DashboardPage() {
                 value={newCustom}
                 onChange={(e) => setNewCustom(e.target.value)}
               />
-              <button
-                onClick={addCustomAddiction}
-                disabled={!newCustom.trim()}
-              >
+              <button onClick={addCustomAddiction} disabled={!newCustom.trim()}>
                 <FontAwesomeIcon icon={faPlus} /> Add
               </button>
               <div className="addiction-list">

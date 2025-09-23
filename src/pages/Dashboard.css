@@ -16,6 +16,13 @@
   --danger: #ff6b6b;
 }
 
+.logo-img {
+  width: 100px;     
+  height: auto;
+  display: block;
+  margin: 0 auto 10px; 
+}
+
 .dashboard {
   display: flex;
   min-height: 100vh;

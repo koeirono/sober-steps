@@ -6,6 +6,10 @@ import {
   faShieldHalved,
   faClock,
   faBarsProgress,
+  faBell,
+  faMedal,
+  faHandsHelping,
+  faChartLine,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Homepage() {
@@ -49,16 +53,10 @@ export default function Homepage() {
           <a href="#whyus">Why Us</a>
           <a href="#gallery">Testimonials</a>
           <div className="auth-buttons">
-            <a href="/login" className="login-btn">
-              Login
-            </a>
-            <a href="/signup" className="signup-btn">
-              Sign Up
-            </a>
+            <a href="/login" className="login-btn">Login</a>
+            <a href="/signup" className="signup-btn">Sign Up</a>
           </div>
         </div>
-
-        <div className="call-btn"></div>
       </nav>
 
       <section className="hero" id="home">
@@ -67,10 +65,12 @@ export default function Homepage() {
         </div>
         <div className="hero-content">
           <h1>Sober Steps</h1>
-          <p>Every small step counts <br /> Whether it’s overcoming addiction or building new habits, Sober Steps is here to guide, support, and celebrate every victory with you. <br /> Begin your journey now.</p>
-          <a href="/signup" className="contact-btn">
-            Sign Up
-          </a>
+          <p>
+            Every small step counts <br />
+            Whether it’s overcoming addiction or building new habits, Sober Steps is here to guide, support, and celebrate every victory with you.
+            <br /> Begin your journey now.
+          </p>
+          <a href="/signup" className="contact-btn">Sign Up</a>
         </div>
       </section>
 
@@ -78,29 +78,27 @@ export default function Homepage() {
         <h2>Our Features</h2>
         <div className="features-grid">
           <div className="features-card">
-            <img src="" alt="feature" />
-            <h3>Feature1</h3>
-            <p>
-              Fresh, high-quality wheat flour for businesses and individuals.
-            </p>
+            <FontAwesomeIcon icon={faBell} size="3x" />
+            <h3>Daily Reminders</h3>
+            <p>Stay consistent with gentle reminders to log progress and keep moving forward.</p>
           </div>
 
           <div className="features-card">
-            <img src="" alt="feature" />
-            <h3>Feature2</h3>
-            <p>Fresh gram flour, perfect for cooking, baking, and snacks.</p>
+            <FontAwesomeIcon icon={faChartLine} size="3x" />
+            <h3>Progress Dashboard</h3>
+            <p>Visualize your journey with clear charts that track milestones and victories.</p>
           </div>
 
           <div className="features-card">
-            <img src="" alt="feature" />
-            <h3>feature</h3>
-            <p>High-quality jowar flour for roti, bread, and other dishes.</p>
+            <FontAwesomeIcon icon={faBarsProgress} size="3x" />
+            <h3>Goal Setting</h3>
+            <p>Set and track personal goals to stay motivated on your recovery journey.</p>
           </div>
 
           <div className="features-card">
-            <img src="" alt="feature" />
-            <h3>Chilli Pounding</h3>
-            <p>Fresh chili powder using traditional pounding methods.</p>
+            <FontAwesomeIcon icon={faShieldHalved} size="3x" />
+            <h3>Safe & Private</h3>
+            <p>Your progress and personal information are securely protected.</p>
           </div>
         </div>
       </section>
@@ -113,10 +111,7 @@ export default function Homepage() {
             support individuals overcoming addictions and building healthier
             habits. Whether someone is recovering from alcohol, nicotine, or
             other behavioral addictions, SoberSteps provides tools to track
-            progress, stay motivated, and celebrate milestones. <br /> The app
-            features daily progress tracking, reminders, motivational insights,
-            and milestone celebrations, empowering users to visualize their
-            journey and see how far they’ve come.
+            progress, stay motivated, and celebrate milestones.
           </p>
           <img src="recovery.jpg" alt="About Us" />
         </div>
@@ -127,71 +122,64 @@ export default function Homepage() {
         <div className="whyus-grid">
           <div className="why-card">
             <FontAwesomeIcon icon={faPerson} size="4x" />
-            <br />
-            <br />
             <h3>Personalized Tracking</h3>
-            <br />
-            <p>
-              Tailor your recovery journey to your specific needs and goals.
-            </p>
+            <p>Tailor your recovery journey to your specific needs and goals.</p>
           </div>
           <div className="why-card">
             <FontAwesomeIcon icon={faShieldHalved} size="4x" />
-            <br />
-            <br />
             <h3>Safe & Private</h3>
-            <br />
-            <p>
-              Your progress and personal information are securely protected.
-            </p>
+            <p>Your progress and personal information are securely protected.</p>
           </div>
           <div className="why-card">
             <FontAwesomeIcon icon={faClock} size="4x" />
-            <br />
-            <br />
             <h3>Time-Efficient</h3>
-            <br />
-            <p>
-              Quick and easy-to-use features ensure you spend more time focusing
-              on recovery and less time navigating the app.
-            </p>
+            <p>Quick and easy-to-use features ensure you focus more on recovery.</p>
           </div>
           <div className="why-card">
             <FontAwesomeIcon icon={faBarsProgress} size="4x" />
-            <br />
-            <br />
             <h3>Track Your Progress</h3>
-            <br />
-            <p>
-              Visualize your milestones and achievements with intuitive daily
-              tracking tools that make your progress tangible.
-            </p>
+            <p>Visualize milestones with intuitive daily tracking tools.</p>
           </div>
         </div>
       </section>
 
-      <section className="gallery" id="gallery">
-        <h2>Testimonials</h2>
-        <div className="gallery-grid">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <img
-              key={i}
-              src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
-              alt={`Gallery ${i}`}
-            />
-          ))}
-        </div>
-      </section>
+<section className="gallery" id="gallery">
+  <h2>Testimonials</h2>
+  <div className="gallery-grid">
+    <div className="testimonial-card">
+      <img
+        src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        alt="James"
+      />
+      <p>"SoberSteps kept me motivated each day. I'm proud of how far I’ve come."</p>
+      <strong>- James</strong>
+    </div>
+    <div className="testimonial-card">
+      <img
+        src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        alt="Maria"
+      />
+      <p>"The reminders are gentle but powerful. They help me stay on track."</p>
+      <strong>- Maria</strong>
+    </div>
+    <div className="testimonial-card">
+      <img
+        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        alt="Daniel"
+      />
+      <p>"Tracking my progress visually gave me the confidence to keep going."</p>
+      <strong>- Daniel</strong>
+    </div>
+  </div>
+</section>
+
+
 
       <footer className="footer">
-        <p>Copyright 2024 &copy; All Rights Reserved</p>
+        <p>Copyright 2025 &copy; All Rights Reserved</p>
         <ul>
-          <li>
-            <a href="#contactUs">Contact</a>
-          </li>
-          <li>
-            <a href="/privacy">Privacy Policy</a>
-          </li>
+          <li><a href="#contactUs">Contact</a></li>
+          <li><a href="/privacy">Privacy Policy</a></li>
         </ul>
       </footer>
     </div>

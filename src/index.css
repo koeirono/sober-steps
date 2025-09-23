@@ -304,3 +304,45 @@ body.dark .auth-card .switch-auth a {
   background: #7cc5f5 !important;
   color: #000 !important;
 }
+
+.gallery {
+  text-align: center;      
+  padding: 40px 0;       
+}
+
+.gallery-grid {
+  display: flex;
+  justify-content: center; 
+  align-items: flex-start;
+  gap: 40px;              
+  flex-wrap: wrap;         
+  margin: 0 auto;         
+  max-width: 900px;       
+}
+
+.testimonial-card {
+  text-align: center;
+  max-width: 250px;
+}
+
+
+.testimonial-card img {
+  width: 220px;      
+  height: 220px;     
+  object-fit: cover;   
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+
+.testimonial-card p {
+  font-style: italic;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.testimonial-card h4 {
+  font-weight: bold;
+  margin: 0;
+}
+

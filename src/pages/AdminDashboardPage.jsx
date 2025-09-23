@@ -120,9 +120,16 @@ export default function AdminDashboardPage() {
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
-        <div className="sidebar-top">
-          {!collapsed && <h2 className="logo">Admin</h2>}
-          <button onClick={() => setCollapsed(!collapsed)}>
+          <div className="sidebar-top">
+          {!collapsed && <img
+            src="/1.png"
+            alt="SoberSteps Logo"
+            className="logo-img"
+          />}
+          <button
+            className="collapse-btn"
+            onClick={() => setCollapsed(!collapsed)}
+          >
             {collapsed ? "▶" : "◀"}
           </button>
         </div>

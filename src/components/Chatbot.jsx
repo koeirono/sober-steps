@@ -45,8 +45,12 @@ export default function Chatbot({ darkMode }) {
   return (
     <div className={`chatbot-container ${darkMode ? "dark" : ""}`}>
       <button className="chatbot-toggle" onClick={() => setOpen(!open)}>
-        {open ? "✖" : <FontAwesomeIcon icon={faComment}  />}
-      </button>
+  {open ? "✖ Close" : (
+    <>
+      <FontAwesomeIcon icon={faComment} /> Chat with me
+    </>
+  )}
+</button>
 
       {open && (
         <div className="chatbot-window">
