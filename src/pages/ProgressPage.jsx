@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; 
+import { useState, useEffect } from "react";
 import { auth, db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { Link, useLocation } from "react-router-dom";
@@ -11,6 +11,8 @@ import {
   faChartBar,
   faGear,
   faRightFromBracket,
+  faAngleLeft,
+  faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -53,7 +55,7 @@ export default function ProgressPage() {
     fetchLogs();
   }, []);
 
-  const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const monthlyData = monthNames.map((month, idx) => ({
     month,
     Logs: logs.filter(date => new Date(date).getMonth() === idx).length
@@ -76,35 +78,45 @@ export default function ProgressPage() {
 
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
-          {!collapsed && <h2 className="logo">SoberSteps</h2>}
-          <button className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
-            {collapsed ? "▶" : "◀"}
+          {!collapsed && <img
+            src="/1.png"
+            alt="SoberSteps Logo"
+            className="logo-img"
+          />}
+          <button
+            className="collapse-btn"
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            <FontAwesomeIcon icon={collapsed ? faAngleRight : faAngleLeft} />
           </button>
         </div>
         <div className="sidebar-content">
           <ul>
             <li className={location.pathname === "/dashboard" ? "active" : ""}>
               <Link to="/dashboard">
-                {collapsed ? <FontAwesomeIcon icon={faHome} /> : "Dashboard"}
+                <FontAwesomeIcon icon={faHome} />
+                {!collapsed && <span>Dashboard</span>}
               </Link>
             </li>
             <li className={location.pathname === "/progress" ? "active" : ""}>
               <Link to="/progress">
-                {collapsed ? <FontAwesomeIcon icon={faChartBar} /> : "Progress"}
+                <FontAwesomeIcon icon={faChartBar} />
+                {!collapsed && <span>Progress</span>}
               </Link>
             </li>
             <li className={location.pathname === "/settings" ? "active" : ""}>
               <Link to="/settings">
-                {collapsed ? <FontAwesomeIcon icon={faGear} /> : "Settings"}
+                <FontAwesomeIcon icon={faGear} />
+                {!collapsed && <span>Settings</span>}
               </Link>
             </li>
           </ul>
         </div>
         <div className="sidebar-bottom">
           <button onClick={() => setDarkMode(!darkMode)}>
-            {collapsed ? <FontAwesomeIcon icon={darkMode ? faSun : faMoon} /> 
-                       : darkMode ? <> <FontAwesomeIcon icon={faSun} /> Light</> 
-                                  : <> <FontAwesomeIcon icon={faMoon} /> Dark</>}
+            {collapsed ? <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
+              : darkMode ? <> <FontAwesomeIcon icon={faSun} /> Light</>
+                : <> <FontAwesomeIcon icon={faMoon} /> Dark</>}
           </button>
           <button onClick={handleLogout}>
             <FontAwesomeIcon icon={faRightFromBracket} /> {!collapsed && "Logout"}
@@ -127,11 +139,11 @@ export default function ProgressPage() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis allowDecimals={false} />
-                <Tooltip 
+                <Tooltip
                   formatter={(value) => [value, "Logs"]}
                   labelFormatter={(label) => `Month: ${label}`}
                 />
-                <Legend verticalAlign="top" height={36}/>
+                <Legend verticalAlign="top" height={36} />
                 <Bar dataKey="Logs" fill={darkMode ? "#4facfe" : "#007bff"} name="Logs" />
               </BarChart>
             </ResponsiveContainer>

@@ -11,6 +11,8 @@ import {
   faChartBar,
   faGear,
   faRightFromBracket,
+  faAngleLeft,
+  faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -90,9 +92,16 @@ export default function SettingsPage() {
 
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
-          {!collapsed && <h2 className="logo">SoberSteps</h2>}
-          <button className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
-            {collapsed ? "▶" : "◀"}
+                {!collapsed && <img
+            src="/1.png"
+            alt="SoberSteps Logo"
+            className="logo-img"
+          />}
+          <button
+            className="collapse-btn"
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            <FontAwesomeIcon icon={collapsed ? faAngleRight : faAngleLeft} />
           </button>
         </div>
 
@@ -100,17 +109,20 @@ export default function SettingsPage() {
           <ul>
             <li className={location.pathname === "/dashboard" ? "active" : ""}>
               <Link to="/dashboard">
-                {collapsed ? <FontAwesomeIcon icon={faHome} /> : "Dashboard"}
+                <FontAwesomeIcon icon={faHome} />
+                {!collapsed && <span>Dashboard</span>}
               </Link>
             </li>
             <li className={location.pathname === "/progress" ? "active" : ""}>
               <Link to="/progress">
-                {collapsed ? <FontAwesomeIcon icon={faChartBar} /> : "Progress"}
+                <FontAwesomeIcon icon={faChartBar} />
+                {!collapsed && <span>Progress</span>}
               </Link>
             </li>
             <li className={location.pathname === "/settings" ? "active" : ""}>
               <Link to="/settings">
-                {collapsed ? <FontAwesomeIcon icon={faGear} /> : "Settings"}
+                <FontAwesomeIcon icon={faGear} />
+                {!collapsed && <span>Settings</span>}
               </Link>
             </li>
           </ul>
