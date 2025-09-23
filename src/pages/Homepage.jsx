@@ -178,8 +178,6 @@ export default function Homepage() {
       <footer className="footer">
         <p>Copyright 2025 &copy; All Rights Reserved</p>
         <ul>
-          <li><a href="#contactUs">Contact</a></li>
-          <li><a href="/privacy">Privacy Policy</a></li>
         </ul>
       </footer>
     </div>
