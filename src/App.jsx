@@ -13,7 +13,6 @@ import Navbar from "./components/Navbar";
 function AppWrapper() {
   const location = useLocation();
 
-  // hide navbar on these pages
   const hideNavbar =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
@@ -21,7 +20,8 @@ function AppWrapper() {
     location.pathname === "/dashboard" ||
     location.pathname === "/progress" ||
     location.pathname === "/settings" ||
-    location.pathname === "/admin";
+    location.pathname === "/admin"||
+    location.pathname === "/home";
 
   return (
     <>
