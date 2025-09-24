@@ -241,7 +241,6 @@ const deleteNote = async (id) => {
     const user = auth.currentUser;
     if (!user) return;
 
-    // require at least one addiction selected
     const selected = Object.keys(addictions).filter(
       (k) => addictions[k] && k !== "Other" && k !== "customList"
     );
