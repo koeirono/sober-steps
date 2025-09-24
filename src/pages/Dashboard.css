@@ -17,10 +17,10 @@
 }
 
 .logo-img {
-  width: 100px;     
+  width: 100px;
   height: auto;
   display: block;
-  margin: 0 auto 10px; 
+  margin: 0 auto 10px;
 }
 
 .dashboard {
@@ -326,4 +326,46 @@ textarea {
   margin-top: 1rem;
   max-height: 300px;
   overflow-y: auto;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-btn,
+.delete-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+  background: #dc2626;
+  color: white;
+}
+
+.edit-btn {
+  background: #2563eb;
+  color: white;
+}
+.edit-btn:hover {
+  background: #1d4ed8;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+}
+.delete-btn:hover {
+  background: #b91c1c;
 }
