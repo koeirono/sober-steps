@@ -200,34 +200,89 @@ const deleteNote = async (id) => {
     toast.success("Custom addiction added!");
   };
 
-  const deleteCustomAddiction = async (index) => {
-    const user = auth.currentUser;
-    if (!user) return;
-    const updatedCustom = [...customAddictions];
-    updatedCustom.splice(index, 1);
-    setCustomAddictions(updatedCustom);
-    const updatedAdd = { ...addictions, customList: updatedCustom };
-    setAddictions(updatedAdd);
-    await setDoc(
-      doc(db, "users", user.uid, "dashboard", "addictions"),
-      updatedAdd
-    );
-    toast.info("Custom addiction deleted!");
-  };
+const deleteCustomAddiction = async (index) => {
+  const user = auth.currentUser;
+  if (!user) return;
 
-  const resetAddictions = async () => {
-    const confirmReset = window.confirm(
-      "Are you sure you want to reset all addictions? This action cannot be undone."
-    );
-    if (!confirmReset) return;
+  const addictionName = customAddictions[index];
 
-    const user = auth.currentUser;
-    if (!user) return;
-    setAddictions({});
-    setCustomAddictions([]);
-    await setDoc(doc(db, "users", user.uid, "dashboard", "addictions"), {});
-    toast.info("Addictions reset!");
-  };
+  toast.warn(
+    ({ closeToast }) => (
+      <div>
+        <p>Delete <b>{addictionName}</b>? This cannot be undone.</p>
+        <div className="flex gap-2 mt-2">
+          <button
+            className="bg-red-500 text-white px-2 py-1 rounded"
+            onClick={async () => {
+              const updatedCustom = [...customAddictions];
+              updatedCustom.splice(index, 1);
+              setCustomAddictions(updatedCustom);
+
+              const updatedAdd = { ...addictions, customList: updatedCustom };
+              setAddictions(updatedAdd);
+
+              await setDoc(
+                doc(db, "users", user.uid, "dashboard", "addictions"),
+                updatedAdd
+              );
+
+              toast.success(`${addictionName} deleted!`);
+              closeToast();
+            }}
+          >
+            Yes
+          </button>
+          <button
+            className="bg-gray-300 px-2 py-1 rounded"
+            onClick={closeToast}
+          >
+            No
+          </button>
+        </div>
+      </div>
+    ),
+    { autoClose: false }
+  );
+};
+
+
+const resetAddictions = async () => {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  toast.warn(
+    ({ closeToast }) => (
+      <div>
+        <p>
+          Are you sure you want to reset all addictions? <br />
+          This cannot be undone.
+        </p>
+        <div className="flex gap-2 mt-2">
+          <button
+            className="bg-red-500 text-white px-2 py-1 rounded"
+            onClick={async () => {
+              setAddictions({});
+              setCustomAddictions([]);
+              await setDoc(doc(db, "users", user.uid, "dashboard", "addictions"), {});
+              toast.success("All addictions have been reset!");
+              closeToast();
+            }}
+          >
+            Yes
+          </button>
+          <button
+            className="bg-gray-300 px-2 py-1 rounded"
+            onClick={closeToast}
+          >
+            No
+          </button>
+        </div>
+      </div>
+    ),
+    { autoClose: false } 
+  );
+};
+
 
   const getLocalDate = () => {
     const now = new Date();
@@ -262,21 +317,44 @@ const deleteNote = async (id) => {
     toast.success("Logged today!");
   };
 
-  const resetLogs = async () => {
-    const confirmReset = window.confirm(
-      "Are you sure you want to reset all logs? This action cannot be undone."
-    );
-    if (!confirmReset) return;
+const resetLogs = async () => {
+  const user = auth.currentUser;
+  if (!user) return;
 
-    const user = auth.currentUser;
-    if (!user) return;
-    setLogDates([]);
-    setStreak(0);
-    await setDoc(doc(db, "users", user.uid, "dashboard", "logs"), {
-      dates: [],
-    });
-    toast.info("Logs reset!");
-  };
+  toast.warn(
+    ({ closeToast }) => (
+      <div>
+        <p>Are you sure you want to reset all logs?  <br />
+          There is no shame in starting over. Keep coming back !
+        </p>
+        <div className="flex gap-2 mt-2">
+          <button
+            className="bg-red-500 text-white px-2 py-1 rounded"
+            onClick={async () => {
+              setLogDates([]);
+              setStreak(0);
+              await setDoc(doc(db, "users", user.uid, "dashboard", "logs"), {
+                dates: [],
+              });
+              toast.success("All logs have been reset!");
+              closeToast();
+            }}
+          >
+            Yes
+          </button>
+          <button
+            className="bg-gray-300 px-2 py-1 rounded"
+            onClick={closeToast}
+          >
+            No
+          </button>
+        </div>
+      </div>
+    ),
+    { autoClose: false }
+  );
+};
+
 
   const handleLogout = async () => {
     try {
