@@ -23,6 +23,7 @@ export default function Chatbot({ darkMode }) {
         dangerouslyAllowBrowser: true, 
       });
 
+      
       const res = await client.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
