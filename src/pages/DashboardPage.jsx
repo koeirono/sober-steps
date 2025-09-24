@@ -32,8 +32,7 @@ import {
   faCalendarCheck,
   faAngleLeft,
   faAngleRight,
-}
-  from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/free-solid-svg-icons";
 import Chatbot from "../components/Chatbot";
 import "./Dashboard.css";
 
@@ -75,7 +74,8 @@ export default function DashboardPage() {
     let streak = 1;
     for (let i = 1; i < sorted.length; i++) {
       const diff =
-        (new Date(sorted[i - 1]) - new Date(sorted[i])) / (1000 * 60 * 60 * 24);
+        (new Date(sorted[i - 1]) - new Date(sorted[i])) /
+        (1000 * 60 * 60 * 24);
       if (diff === 1) streak++;
       else break;
     }
@@ -139,18 +139,38 @@ export default function DashboardPage() {
     }
   };
 
-  const deleteNote = async (id) => {
-    const user = auth.currentUser;
-    if (!user) return;
-    try {
-      await deleteDoc(doc(db, "users", user.uid, "notes", id));
-      setAllNotes((prev) => prev.filter((n) => n.id !== id));
-      toast.info("Note deleted!");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to delete note");
-    }
-  };
+const deleteNote = async (id) => {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  toast.warn(
+    ({ closeToast }) => (
+      <div>
+        <p>Are you sure you want to delete this note?</p>
+        <div className="flex gap-2 mt-2">
+          <button
+            className="bg-red-500 text-white px-2 py-1 rounded"
+            onClick={async () => {
+              await deleteDoc(doc(db, "users", user.uid, "notes", id));
+              setNotes(notes.filter((note) => note.id !== id));
+              toast.success("Note deleted!");
+              closeToast(); 
+            }}
+          >
+            Yes
+          </button>
+          <button
+            className="bg-gray-300 px-2 py-1 rounded"
+            onClick={closeToast}
+          >
+            No
+          </button>
+        </div>
+      </div>
+    ),
+    { autoClose: false } 
+  );
+};
 
   const toggleAddiction = async (add) => {
     const user = auth.currentUser;
@@ -196,6 +216,11 @@ export default function DashboardPage() {
   };
 
   const resetAddictions = async () => {
+    const confirmReset = window.confirm(
+      "Are you sure you want to reset all addictions? This action cannot be undone."
+    );
+    if (!confirmReset) return;
+
     const user = auth.currentUser;
     if (!user) return;
     setAddictions({});
@@ -215,8 +240,20 @@ export default function DashboardPage() {
   const logToday = async () => {
     const user = auth.currentUser;
     if (!user) return;
+
+    // require at least one addiction selected
+    const selected = Object.keys(addictions).filter(
+      (k) => addictions[k] && k !== "Other" && k !== "customList"
+    );
+    if (selected.length === 0) {
+      return toast.warning(
+        "Please select at least one addiction before logging."
+      );
+    }
+
     const today = getLocalDate();
     if (logDates.includes(today)) return toast.info("Already logged today");
+
     const updated = [...logDates, today];
     setLogDates(updated);
     setStreak(calculateStreak(updated));
@@ -227,6 +264,11 @@ export default function DashboardPage() {
   };
 
   const resetLogs = async () => {
+    const confirmReset = window.confirm(
+      "Are you sure you want to reset all logs? This action cannot be undone."
+    );
+    if (!confirmReset) return;
+
     const user = auth.currentUser;
     if (!user) return;
     setLogDates([]);
@@ -258,7 +300,8 @@ export default function DashboardPage() {
       if ((hoursEAT === 8 || hoursEAT === 20) && !logDates.includes(today)) {
         toast.info(
           <div>
-            <FontAwesomeIcon icon={faBell} />  Don’t forget to log your progress today!
+            <FontAwesomeIcon icon={faBell} /> Don’t forget to log your progress
+            today!
           </div>
         );
       }
@@ -268,7 +311,8 @@ export default function DashboardPage() {
     if (!logDates.includes(today)) {
       toast.info(
         <div>
-          <FontAwesomeIcon icon={faCalendarCheck} />  Welcome back! Don’t forget to log your progress today.
+          <FontAwesomeIcon icon={faCalendarCheck} /> Welcome back! Don’t forget
+          to log your progress today.
         </div>
       );
     }
@@ -278,18 +322,15 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [logDates]);
 
-
   return (
     <div className={`dashboard ${darkMode ? "dark" : "light"}`}>
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
-          {!collapsed && <img
-            src="/1.png"
-            alt="SoberSteps Logo"
-            className="logo-img"
-          />}
+          {!collapsed && (
+            <img src="/1.png" alt="SoberSteps Logo" className="logo-img" />
+          )}
           <button
             className="collapse-btn"
             onClick={() => setCollapsed(!collapsed)}
