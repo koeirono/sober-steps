@@ -331,7 +331,7 @@ export default function DashboardPage() {
 
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
-          {!collapsed && <img src="/1.png" alt="Logo" className="logo-img" />}
+          {!collapsed && <img src="/sober.png" alt="Logo" className="logo-img" />}
           <button className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
             <FontAwesomeIcon icon={collapsed ? faAngleRight : faAngleLeft} />
           </button>

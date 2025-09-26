@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,10 +19,30 @@ export default function UsersPage() {
     const fetchUsers = async () => {
       try {
         const userSnap = await getDocs(collection(db, "users"));
-        const usersData = userSnap.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const usersData = [];
+
+        for (const userDoc of userSnap.docs) {
+          const userData = { id: userDoc.id, ...userDoc.data(), habits: [] };
+
+          const habitsSnap = await getDoc(
+            doc(db, "users", userDoc.id, "dashboard", "addictions")
+          );
+          if (habitsSnap.exists()) {
+            const data = habitsSnap.data();
+            const tracked = Object.entries(data)
+              .filter(([habit, isTracking]) => habit !== "customList" && isTracking)
+              .map(([habit]) => habit);
+
+            if (data.customList && Array.isArray(data.customList)) {
+              tracked.push(...data.customList);
+            }
+
+            userData.habits = tracked;
+          }
+
+          usersData.push(userData);
+        }
+
         setUsers(usersData);
       } catch (err) {
         toast.error("Failed to fetch users");
@@ -30,7 +56,9 @@ export default function UsersPage() {
     try {
       await updateDoc(doc(db, "users", id), { username: editValue });
       setUsers(
-        users.map(u => u.id === id ? { ...u, username: editValue } : u)
+        users.map((u) =>
+          u.id === id ? { ...u, username: editValue } : u
+        )
       );
       setEditingUser(null);
       setEditValue("");
@@ -50,29 +78,41 @@ export default function UsersPage() {
           <tr>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Username</th>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Email</th>
+            <th style={{ textAlign: "left", padding: "0.5rem" }}>Habits Being Tracked</th>
             <th style={{ textAlign: "left", padding: "0.5rem" }}>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {users.map((user) => (
             <tr key={user.id} style={{ borderBottom: "1px solid #ccc" }}>
               <td style={{ padding: "0.5rem" }}>
-                {editingUser === user.id
-                  ? <input 
-                      value={editValue} 
-                      onChange={e => setEditValue(e.target.value)} 
-                      style={{ padding: "0.4rem", width: "90%" }}
-                    />
-                  : (user.username || "N/A")}
+                {editingUser === user.id ? (
+                  <input
+                    value={editValue}
+                    onChange={(e) => setEditValue(e.target.value)}
+                    style={{ padding: "0.4rem", width: "90%" }}
+                  />
+                ) : (
+                  user.username || "N/A"
+                )}
               </td>
               <td style={{ padding: "0.5rem" }}>{user.email}</td>
               <td style={{ padding: "0.5rem" }}>
-                {editingUser === user.id
-                  ? <button onClick={() => handleSaveUser(user.id)}>💾 Save</button>
-                  : <button onClick={() => { 
-                      setEditingUser(user.id); 
-                      setEditValue(user.username || ""); 
-                    }}>Edit</button>}
+                {user.habits.length > 0 ? user.habits.join(", ") : "None"}
+              </td>
+              <td style={{ padding: "0.5rem" }}>
+                {editingUser === user.id ? (
+                  <button onClick={() => handleSaveUser(user.id)}>💾 Save</button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setEditingUser(user.id);
+                      setEditValue(user.username || "");
+                    }}
+                  >
+                    Edit
+                  </button>
+                )}
               </td>
             </tr>
           ))}

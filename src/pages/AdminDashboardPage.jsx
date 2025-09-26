@@ -25,7 +25,7 @@ export default function AdminDashboardPage({ handleLogout }) {
       <div className={`admin-sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="admin-sidebar-top">
           {!collapsed && (
-            <img src="/1.png" alt="SoberSteps Logo" className="admin-logo-img" />
+            <img src="/sober.png" alt="SoberSteps Logo" className="admin-logo-img" />
           )}
           <button className="admin-collapse-btn" onClick={() => setCollapsed(!collapsed)}>
             <FontAwesomeIcon icon={collapsed ? faAngleRight : faAngleLeft} />
