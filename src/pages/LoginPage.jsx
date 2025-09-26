@@ -44,9 +44,9 @@ export default function LoginPage() {
     <div className="auth-container">
       <div className="auth-card">
         <img
-          src="/1.png"
+          src="/sober.png"
           alt="Logo"
-          style={{ width: "150px", height: "150px", marginBottom: "10px" }}
+          style={{ width: "150px", height: "150px", marginBottom: "15px", borderRadius: "0" }}
         />
         <h2>Welcome Back</h2>
         <p className="subtitle">Log in to continue your journey</p>
