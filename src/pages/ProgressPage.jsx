@@ -42,9 +42,16 @@ export default function ProgressPage() {
       if (!user) return;
 
       try {
-        const logsSnap = await getDoc(doc(db, "users", user.uid, "dashboard", "logs"));
+        const logsSnap = await getDoc(
+          doc(db, "users", user.uid, "dashboard", "logs")
+        );
         if (logsSnap.exists()) {
-          const dates = logsSnap.data().dates || [];
+          let dates = logsSnap.data().dates || [];
+
+          if (!Array.isArray(dates)) {
+            dates = Object.keys(dates);
+          }
+
           setLogs(dates);
         }
       } catch (err) {
@@ -55,10 +62,14 @@ export default function ProgressPage() {
     fetchLogs();
   }, []);
 
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
   const monthlyData = monthNames.map((month, idx) => ({
     month,
-    Logs: logs.filter(date => new Date(date).getMonth() === idx).length
+    Logs: logs.filter(date => new Date(date).getMonth() === idx).length,
   }));
 
   const handleLogout = async () => {
@@ -78,11 +89,13 @@ export default function ProgressPage() {
 
       <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
         <div className="sidebar-top">
-          {!collapsed && <img
-            src="/1.png"
-            alt="SoberSteps Logo"
-            className="logo-img"
-          />}
+          {!collapsed && (
+            <img
+              src="/1.png"
+              alt="SoberSteps Logo"
+              className="logo-img"
+            />
+          )}
           <button
             className="collapse-btn"
             onClick={() => setCollapsed(!collapsed)}
@@ -114,12 +127,21 @@ export default function ProgressPage() {
         </div>
         <div className="sidebar-bottom">
           <button onClick={() => setDarkMode(!darkMode)}>
-            {collapsed ? <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
-              : darkMode ? <> <FontAwesomeIcon icon={faSun} /> Light</>
-                : <> <FontAwesomeIcon icon={faMoon} /> Dark</>}
+            {collapsed ? (
+              <FontAwesomeIcon icon={darkMode ? faSun : faMoon} />
+            ) : darkMode ? (
+              <>
+                <FontAwesomeIcon icon={faSun} /> Light
+              </>
+            ) : (
+              <>
+                <FontAwesomeIcon icon={faMoon} /> Dark
+              </>
+            )}
           </button>
           <button onClick={handleLogout}>
-            <FontAwesomeIcon icon={faRightFromBracket} /> {!collapsed && "Logout"}
+            <FontAwesomeIcon icon={faRightFromBracket} />{" "}
+            {!collapsed && "Logout"}
           </button>
         </div>
       </div>
@@ -144,7 +166,11 @@ export default function ProgressPage() {
                   labelFormatter={(label) => `Month: ${label}`}
                 />
                 <Legend verticalAlign="top" height={36} />
-                <Bar dataKey="Logs" fill={darkMode ? "#4facfe" : "#007bff"} name="Logs" />
+                <Bar
+                  dataKey="Logs"
+                  fill={darkMode ? "#4facfe" : "#007bff"}
+                  name="Logs"
+                />
               </BarChart>
             </ResponsiveContainer>
           )}
